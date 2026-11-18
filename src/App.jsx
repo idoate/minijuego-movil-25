@@ -29,6 +29,12 @@ export default function App() {
     })
   }
 
+  // Al tocar a Summer queda apuntado: si se cierra la web a mitad, cuenta como fallo (ver leerProgreso).
+  function abrir(cual) {
+    if (cual === 'summer') actualizar(() => ({ calmando: true }))
+    setTarjeta(cual)
+  }
+
   if (!progreso.entrada) return <Contrasena onEntrar={() => actualizar(() => ({ entrada: true }))} />
 
   const dia = typeof tarjeta === 'number' ? DIAS[tarjeta] : null
@@ -41,7 +47,7 @@ export default function App() {
         <h1>Nuestro camino</h1>
         {fecha < INICIO && <p>Tu viaje empieza el 25 de noviembre</p>}
       </header>
-      <Camino hoy={fecha} progreso={progreso} onAbrir={setTarjeta} />
+      <Camino hoy={fecha} progreso={progreso} onAbrir={abrir} />
 
       {carta && (
         <Tarjeta onCerrar={() => actualizar(() => ({ cartaLeida: true }))}>
@@ -72,8 +78,8 @@ export default function App() {
           <Summer
             config={SUMMER}
             enSalida={progreso.enSalida}
-            onSuperar={() => { actualizar(() => ({ enSalida: false })); setTarjeta(null) }}
-            onFallar={() => { actualizar(() => ({ enSalida: true })); setTarjeta(null) }}
+            onSuperar={() => { actualizar(() => ({ enSalida: false, calmando: false })); setTarjeta(null) }}
+            onFallar={() => { actualizar(() => ({ enSalida: true, calmando: false })); setTarjeta(null) }}
           />
         </Tarjeta>
       )}

@@ -25,11 +25,14 @@ export function normalizar(texto) {
   return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').toLowerCase()
 }
 
-const VACIO = { entrada: false, cartaLeida: false, superados: [], fallados: [], enSalida: false }
+const VACIO = { entrada: false, cartaLeida: false, superados: [], fallados: [], enSalida: false, calmando: false }
 
 export function leerProgreso() {
   try {
-    return { ...VACIO, ...JSON.parse(localStorage.getItem(CLAVE)) }
+    const progreso = { ...VACIO, ...JSON.parse(localStorage.getItem(CLAVE)) }
+    // Se cerró la web mientras calmaba a Summer: cuenta como fallo.
+    if (progreso.calmando) return { ...progreso, calmando: false, enSalida: true }
+    return progreso
   } catch {
     return { ...VACIO }
   }

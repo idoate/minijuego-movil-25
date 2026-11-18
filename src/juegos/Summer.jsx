@@ -96,8 +96,8 @@ export default function Summer({ config, enSalida, onSuperar, onFallar }) {
     }
   }, fase === 'jugando')
 
-  // Una vez empezada, no se puede escapar cerrando la tarjeta.
-  useBloquear(fase === 'jugando')
+  // Si le has alterado, no te puedes ir sin calmarle: la tarjeta se cierra sola al terminar.
+  useBloquear(true)
   useResultado(fase === 'ganado' || fase === 'perdido', fase === 'ganado' ? onSuperar : onFallar, 2200)
 
   function tocar(o) {
