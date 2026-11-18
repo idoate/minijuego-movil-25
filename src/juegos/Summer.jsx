@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { useBloquear, useBucle, useResultado } from './bucle.js'
 import { Aviso } from './Maleta.jsx'
+import { ladrar } from './ladrido.js'
 
 // Summer: labrador beige, de perfil mirando a la derecha. Origen en las patas.
 export function Perro({ contento = false }) {
@@ -89,7 +90,10 @@ export default function Summer({ config, enSalida, onSuperar, onFallar }) {
     if (j.aviso && (j.aviso.vida -= dt) <= 0) j.aviso = null
 
     if (j.calma >= meta) setFase('ganado')
-    else if (j.tiempo >= segundos) setFase('perdido')
+    else if (j.tiempo >= segundos) {
+      setFase('perdido')
+      ladrar(3)
+    }
   }, fase === 'jugando')
 
   // Una vez empezada, no se puede escapar cerrando la tarjeta.
@@ -104,6 +108,7 @@ export default function Summer({ config, enSalida, onSuperar, onFallar }) {
       j.aviso = { texto: '¡Ñam!', bien: true, vida: 0.6 }
     } else {
       j.calma = Math.max(j.calma - 2, 0)
+      ladrar(1)
       j.aviso = { texto: '¡Eso no, que le sienta fatal!', bien: false, vida: 1.2 }
     }
   }

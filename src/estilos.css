@@ -265,9 +265,14 @@ img[hidden] { display: none !important; }
 
 /* Summer */
 .summer-mapa { cursor: pointer; transition-property: transform; transition-timing-function: linear; }
+.summer-mapa.alterado .trote { animation-duration: .15s; }
+.summer-mapa.alterado .trote { --salto-trote: -5px; }
+.guau { animation: guau .6s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: 50% 100%; }
+.guau-texto { font-family: var(--titulo); font-size: 14px; font-weight: 700; text-anchor: middle; fill: #c4503a; }
+@keyframes guau { from { scale: .9; } to { scale: 1.08; } }
 .trote { animation: trote .35s ease-in-out infinite alternate; }
 .summer-mapa .cola, .summer-perro .cola { animation: cola .25s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: 100% 100%; }
-@keyframes trote { from { translate: 0 0; } to { translate: 0 -2.5px; } }
+@keyframes trote { from { translate: 0 0; } to { translate: 0 var(--salto-trote, -2.5px); } }
 @keyframes cola { from { rotate: -12deg; } to { rotate: 14deg; } }
 
 .summer-campo { height: 360px; background: radial-gradient(circle at 50% 55%, #f4ead2, #d9ecc6); }

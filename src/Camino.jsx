@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Fondo from './Fondo.jsx'
 import { Perro } from './juegos/Summer.jsx'
+import { ladrar } from './juegos/ladrido.js'
 import { DIAS, FINAL, MALETA } from './contenido.js'
 import { estadoEtapa, fechaCorta, paradaActual } from './logica.js'
 
@@ -76,36 +77,53 @@ export default function Camino({ hoy, progreso, onAbrir }) {
       <Meta punto={PUNTOS[8]} abierta={hoy >= FINAL.fecha} onAbrir={() => onAbrir('final')} />
       <El x={PUNTOS[8].x + 50} y={PUNTOS[8].y + 22} />
       <Leyre ref={leyreRef} x={punto.x + lado} y={punto.y + (actual === -1 ? 26 : 25)} />
-      <SummerPaseando onTocar={() => onAbrir('summer')} />
+      <SummerPaseando alterado={progreso.enSalida} onTocar={() => { ladrar(2); onAbrir('summer') }} />
     </svg>
   )
 }
 
-// Summer da vueltas por el mapa al trote: elige un sitio al azar, va hasta él y descansa un poco.
-function SummerPaseando({ onTocar }) {
-  const [paseo, setPaseo] = useState({ x: 300, y: 540, mira: -1, segundos: 0 })
+// Summer da vueltas por el mapa: elige un sitio al azar, va hasta él y descansa un poco.
+// Tranquilo pasea despacio; alterado (hasta que Leyre le calme) corre sin parar y ladra.
+function SummerPaseando({ alterado, onTocar }) {
+  const [paseo, setPaseo] = useState({ x: 300, y: 540, mira: -1, segundos: 0, andando: false })
+  const nervios = useRef(alterado)
+  nervios.current = alterado
 
   useEffect(() => {
     let t
     function siguiente(desde) {
       const x = 70 + Math.random() * 220
       const y = 110 + Math.random() * 850
-      const segundos = Math.hypot(x - desde.x, y - desde.y) / 45
-      const nuevo = { x, y, mira: x < desde.x ? -1 : 1, segundos }
+      const velocidad = nervios.current ? 120 : 35
+      const segundos = Math.hypot(x - desde.x, y - desde.y) / velocidad
+      const nuevo = { x, y, mira: x < desde.x ? -1 : 1, segundos, andando: true }
       setPaseo(nuevo)
-      t = setTimeout(() => siguiente(nuevo), (segundos + 0.6 + Math.random() * 1.8) * 1000)
+      const descanso = nervios.current ? 0.1 + Math.random() * 0.4 : 1 + Math.random() * 2.5
+      t = setTimeout(() => {
+        setPaseo(p => ({ ...p, andando: false }))
+        t = setTimeout(() => siguiente(nuevo), descanso * 1000)
+      }, segundos * 1000)
     }
     t = setTimeout(() => siguiente(paseo), 1200)
     return () => clearTimeout(t)
   }, [])
 
   return (
-    <g className="summer-mapa" onClick={onTocar} role="button" aria-label="Summer"
+    <g className={`summer-mapa ${alterado ? 'alterado' : 'tranquilo'}`} onClick={onTocar} role="button"
+      aria-label={alterado ? 'Summer, alterado' : 'Summer'}
       style={{ transform: `translate(${paseo.x}px, ${paseo.y}px)`, transitionDuration: `${paseo.segundos}s` }}>
       <circle r="26" cy="-14" fill="transparent" />
       <g transform={`scale(${paseo.mira}, 1)`}>
-        <g className="trote"><Perro /></g>
+        <g className={paseo.andando ? 'trote' : ''}><Perro /></g>
       </g>
+      {alterado && (
+        <g className="guau" transform="translate(0,-44)">
+          <rect x="-22" y="-12" width="44" height="18" rx="9" fill="#fff" stroke="#c4503a" strokeWidth="1.5" />
+          <path d="M-4,6 L0,12 L4,6Z" fill="#fff" stroke="#c4503a" strokeWidth="1.5" strokeLinejoin="round" />
+          <rect x="-5" y="4" width="10" height="3" fill="#fff" />
+          <text y="2" className="guau-texto">¡Guau!</text>
+        </g>
+      )}
     </g>
   )
 }
