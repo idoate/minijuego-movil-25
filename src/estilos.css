@@ -52,6 +52,7 @@ h3 { font-size: 1.7rem; color: var(--verde); margin-top: 1.2em; }
   box-shadow: 0 3px 0 var(--rosa-oscuro);
 }
 .boton:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--rosa-oscuro); }
+.boton:disabled { opacity: .4; cursor: default; transform: none; }
 .boton.secundario { background: var(--verde-claro); color: var(--tinta); box-shadow: 0 3px 0 var(--verde); }
 
 /* Contraseña */
@@ -261,3 +262,32 @@ img[hidden] { display: none !important; }
 .oveja { position: absolute; top: 0; left: 0; font-size: 28px; line-height: 1; will-change: transform; }
 .pastora { position: absolute; top: 0; left: 0; font-size: 28px; line-height: 1; pointer-events: none; z-index: 1; }
 .cielo { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+
+/* Summer */
+.summer-mapa { cursor: pointer; transition-property: transform; transition-timing-function: linear; }
+.trote { animation: trote .35s ease-in-out infinite alternate; }
+.summer-mapa .cola, .summer-perro .cola { animation: cola .25s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: 100% 100%; }
+@keyframes trote { from { translate: 0 0; } to { translate: 0 -2.5px; } }
+@keyframes cola { from { rotate: -12deg; } to { rotate: 14deg; } }
+
+.summer-campo { height: 360px; background: radial-gradient(circle at 50% 55%, #f4ead2, #d9ecc6); }
+.summer-perro {
+  position: absolute; left: 50%; top: 50%; width: 150px; margin: -60px 0 0 -75px;
+  animation: nervioso .4s ease-in-out infinite alternate;
+}
+@keyframes nervioso { from { translate: 0 0; } to { translate: 0 calc(-1 * var(--salto, 8px)); } }
+.premio {
+  position: absolute; width: 52px; height: 52px; margin: -26px 0 0 -26px; padding: 0;
+  border: 2px solid var(--verde); border-radius: 50%; background: #fff; cursor: pointer;
+  display: grid; place-items: center; font-size: 28px; line-height: 1;
+  animation: aparecer-premio .15s ease-out;
+}
+.premio.prohibido { border-color: #d98c7a; }
+.premio-icono { width: 34px; height: 34px; }
+.mini .premio-icono { width: 22px; height: 22px; vertical-align: middle; }
+@keyframes aparecer-premio { from { scale: .3; } }
+.summer-aviso {
+  position: absolute; left: 0; right: 0; bottom: 12px; margin: 0; z-index: 2;
+  font-family: var(--titulo); font-size: 1.6rem; font-weight: 700; color: #c4503a; pointer-events: none;
+}
+.summer-aviso.bien { color: var(--verde); }

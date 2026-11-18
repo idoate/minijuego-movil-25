@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
+import { useResultado } from './bucle.js'
 
 // Ningún nombre de lugar: solo frío o caliente.
 function pista(distancia, radio) {
@@ -14,11 +15,7 @@ export default function Brujula({ config, onSuperar }) {
   const [toque, setToque] = useState(null) // { x, y } en %, y la pista
   const encontrado = toque?.pista.clase === 'aqui'
 
-  useEffect(() => {
-    if (!encontrado) return
-    const t = setTimeout(onSuperar, 1600)
-    return () => clearTimeout(t)
-  }, [encontrado])
+  useResultado(encontrado, onSuperar, 1600)
 
   function tocar(e) {
     if (encontrado) return

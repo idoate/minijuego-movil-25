@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useResultado } from './bucle.js'
 
 function barajar(items) {
   const copia = [...items]
@@ -27,11 +28,7 @@ export default function Memory({ config, onSuperar }) {
     return () => clearTimeout(t)
   }, [vistas])
 
-  useEffect(() => {
-    if (!ganado) return
-    const t = setTimeout(onSuperar, 1400)
-    return () => clearTimeout(t)
-  }, [ganado])
+  useResultado(ganado, onSuperar, 1400)
 
   function voltear(i) {
     if (vistas.length === 2 || vistas.includes(i) || parejas.includes(cartas[i])) return

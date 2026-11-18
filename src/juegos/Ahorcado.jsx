@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useResultado } from './bucle.js'
 
 const LETRAS = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('')
 const VIDAS = 4
@@ -11,11 +12,7 @@ export default function Ahorcado({ config, onSuperar }) {
   const perdido = fallos >= VIDAS
 
   // Una pausa para ver la palabra completa antes de pasar a la pista.
-  useEffect(() => {
-    if (!ganado) return
-    const t = setTimeout(onSuperar, 1400)
-    return () => clearTimeout(t)
-  }, [ganado])
+  useResultado(ganado, onSuperar, 1400)
 
   return (
     <div className="ahorcado">

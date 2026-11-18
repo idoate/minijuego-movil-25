@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-import { useBucle } from './bucle.js'
+import { useRef, useState } from 'react'
+import { useBucle, useResultado } from './bucle.js'
 import { Aviso } from './Maleta.jsx'
 
 const ALTO_CAMPO = 420 // px, también en estilos.css
@@ -74,11 +74,7 @@ export default function Ovejas({ config, onSuperar }) {
     else if (j.tiempo >= segundos) setFase('noche')
   }, fase === 'jugando')
 
-  useEffect(() => {
-    if (fase !== 'ganado') return
-    const t = setTimeout(onSuperar, 1400)
-    return () => clearTimeout(t)
-  }, [fase])
+  useResultado(fase === 'ganado', onSuperar, 1400)
 
   function dedo(e) {
     const r = campo.current.getBoundingClientRect()

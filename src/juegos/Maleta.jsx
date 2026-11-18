@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-import { useBucle } from './bucle.js'
+import { useRef, useState } from 'react'
+import { useBucle, useResultado } from './bucle.js'
 
 const ANCHO_MALETA = 64 // px
 const ALTO_CAMPO = 420 // px, también en estilos.css
@@ -58,11 +58,7 @@ export default function Maleta({ config, onSuperar }) {
     else if (j.vidas <= 0) setFase('perdido')
   }, fase === 'jugando')
 
-  useEffect(() => {
-    if (fase !== 'ganado') return
-    const t = setTimeout(onSuperar, 1400)
-    return () => clearTimeout(t)
-  }, [fase])
+  useResultado(fase === 'ganado', onSuperar, 1400)
 
   function mover(e) {
     if (!campo.current) return

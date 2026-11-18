@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Fondo from './Fondo.jsx'
+import { Perro } from './juegos/Summer.jsx'
 import { DIAS, FINAL, MALETA } from './contenido.js'
 import { estadoEtapa, fechaCorta, paradaActual } from './logica.js'
 
@@ -26,7 +27,8 @@ const CAMINO = PUNTOS.map((p, i) => {
 const CORAZONES = PUNTOS.slice(1).map((p, i) => ({ x: (p.x + PUNTOS[i].x) / 2, y: (p.y + PUNTOS[i].y) / 2 }))
 
 export default function Camino({ hoy, progreso, onAbrir }) {
-  const actual = paradaActual(hoy)
+  // Si no ha calmado a Summer, Leyre espera en la salida.
+  const actual = progreso.enSalida ? -1 : paradaActual(hoy)
   const leyreRef = useRef(null)
   const llegado = actual === DIAS.length
   const punto = PUNTOS[actual + 1]
@@ -74,7 +76,37 @@ export default function Camino({ hoy, progreso, onAbrir }) {
       <Meta punto={PUNTOS[8]} abierta={hoy >= FINAL.fecha} onAbrir={() => onAbrir('final')} />
       <El x={PUNTOS[8].x + 50} y={PUNTOS[8].y + 22} />
       <Leyre ref={leyreRef} x={punto.x + lado} y={punto.y + (actual === -1 ? 26 : 25)} />
+      <SummerPaseando onTocar={() => onAbrir('summer')} />
     </svg>
+  )
+}
+
+// Summer da vueltas por el mapa al trote: elige un sitio al azar, va hasta él y descansa un poco.
+function SummerPaseando({ onTocar }) {
+  const [paseo, setPaseo] = useState({ x: 300, y: 540, mira: -1, segundos: 0 })
+
+  useEffect(() => {
+    let t
+    function siguiente(desde) {
+      const x = 70 + Math.random() * 220
+      const y = 110 + Math.random() * 850
+      const segundos = Math.hypot(x - desde.x, y - desde.y) / 45
+      const nuevo = { x, y, mira: x < desde.x ? -1 : 1, segundos }
+      setPaseo(nuevo)
+      t = setTimeout(() => siguiente(nuevo), (segundos + 0.6 + Math.random() * 1.8) * 1000)
+    }
+    t = setTimeout(() => siguiente(paseo), 1200)
+    return () => clearTimeout(t)
+  }, [])
+
+  return (
+    <g className="summer-mapa" onClick={onTocar} role="button" aria-label="Summer"
+      style={{ transform: `translate(${paseo.x}px, ${paseo.y}px)`, transitionDuration: `${paseo.segundos}s` }}>
+      <circle r="26" cy="-14" fill="transparent" />
+      <g transform={`scale(${paseo.mira}, 1)`}>
+        <g className="trote"><Perro /></g>
+      </g>
+    </g>
   )
 }
 

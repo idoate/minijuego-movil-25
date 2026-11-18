@@ -117,6 +117,15 @@ export const MALETA = {
   ],
 }
 
+// Summer, el labrador, pasea por el mapa. Si Leyre lo toca, hay que calmarle con sus premios;
+// si no lo consigue, vuelve a la salida hasta que lo calme.
+export const SUMMER = {
+  premios: ['kong', 'pata'], // lamer Philadelphia del Kong y patas de gallina
+  prohibidos: ['🍫', '🍇', '🧅'],
+  meta: 8,
+  segundos: 20,
+}
+
 export const FINAL = {
   fecha: '2026-12-02',
   nombre: 'La Montaña Mágica',

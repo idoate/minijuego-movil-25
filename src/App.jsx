@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Camino from './Camino.jsx'
-import { CONTRASENA, DIAS, FINAL, INICIO, MALETA, MENSAJE_INICIAL } from './contenido.js'
+import { CONTRASENA, DIAS, FINAL, INICIO, MALETA, MENSAJE_INICIAL, SUMMER } from './contenido.js'
 import { estadoEtapa, fechaLarga, fechaSimulada, guardarProgreso, hoy, leerProgreso, normalizar } from './logica.js'
 import Ahorcado from './juegos/Ahorcado.jsx'
 import Brujula from './juegos/Brujula.jsx'
@@ -8,7 +8,9 @@ import Maleta from './juegos/Maleta.jsx'
 import Memory from './juegos/Memory.jsx'
 import Ordena from './juegos/Ordena.jsx'
 import Ovejas from './juegos/Ovejas.jsx'
+import Summer from './juegos/Summer.jsx'
 import Wordle from './juegos/Wordle.jsx'
+import { Bloqueo } from './juegos/bucle.js'
 
 const JUEGOS = {
   ordena: Ordena, ahorcado: Ahorcado, maleta: Maleta, wordle: Wordle, ovejas: Ovejas, brujula: Brujula, memory: Memory,
@@ -58,8 +60,20 @@ export default function App() {
             key={dia.fecha}
             dia={dia}
             estado={estadoEtapa(dia.fecha, fecha, progreso)}
+            enSalida={progreso.enSalida}
             onSuperar={() => actualizar(p => ({ superados: [...p.superados, dia.fecha] }))}
             onFallar={() => actualizar(p => ({ fallados: [...p.fallados, dia.fecha] }))}
+          />
+        </Tarjeta>
+      )}
+
+      {tarjeta === 'summer' && (
+        <Tarjeta onCerrar={() => setTarjeta(null)}>
+          <Summer
+            config={SUMMER}
+            enSalida={progreso.enSalida}
+            onSuperar={() => { actualizar(() => ({ enSalida: false })); setTarjeta(null) }}
+            onFallar={() => { actualizar(() => ({ enSalida: true })); setTarjeta(null) }}
           />
         </Tarjeta>
       )}
@@ -121,18 +135,23 @@ function Corazon() {
   )
 }
 
+// Un juego puede bloquear el botón mientras se ve su mensaje final (ver useBloquear).
 function Tarjeta({ children, onCerrar }) {
+  const [bloqueada, setBloqueada] = useState(false)
   return (
     <div className="velo">
       <section className="tarjeta">
-        {children}
-        <button className="boton secundario" onClick={onCerrar}>Volver al mapa</button>
+        <Bloqueo.Provider value={setBloqueada}>{children}</Bloqueo.Provider>
+        <button className="boton secundario" onClick={onCerrar} disabled={bloqueada}>Volver al mapa</button>
       </section>
     </div>
   )
 }
 
-function Etapa({ dia, estado, onSuperar, onFallar }) {
+function Etapa({ dia, estado, enSalida, onSuperar, onFallar }) {
+  if (estado === 'jugar' && enSalida) {
+    return <Espera icono="🐕" texto="Estás en la salida del camino: primero calma a Summer para volver a tu sitio y jugar." />
+  }
   if (estado === 'jugar') {
     const Juego = JUEGOS[dia.juego]
     return Juego

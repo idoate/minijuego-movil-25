@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useResultado } from './bucle.js'
 
 function barajar(items) {
   const copia = [...items]
@@ -19,14 +20,13 @@ export default function Ordena({ config, onSuperar }) {
 
   useEffect(() => {
     if (fila.length < items.length) return
-    if (ganado) {
-      const t = setTimeout(onSuperar, 1400)
-      return () => clearTimeout(t)
-    }
+    if (ganado) return
     const bien = fila.filter((x, i) => x === items[i]).length
     setAviso(`Casi: ${bien} de ${items.length} en su sitio`)
     setFila([])
   }, [fila])
+
+  useResultado(ganado, onSuperar, 1400)
 
   function colocar(item) {
     setAviso('')

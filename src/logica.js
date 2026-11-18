@@ -25,7 +25,7 @@ export function normalizar(texto) {
   return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').toLowerCase()
 }
 
-const VACIO = { entrada: false, cartaLeida: false, superados: [], fallados: [] }
+const VACIO = { entrada: false, cartaLeida: false, superados: [], fallados: [], enSalida: false }
 
 export function leerProgreso() {
   try {

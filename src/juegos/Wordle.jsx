@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useResultado } from './bucle.js'
 
 const INTENTOS = 6
 const FILAS_TECLADO = ['QWERTYUIOP', 'ASDFGHJKLÑ', '+ZXCVBNM-']
@@ -34,11 +35,7 @@ export default function Wordle({ config, onSuperar, onFallar }) {
   const perdido = sinIntentos && !otraOportunidad
   const terminado = ganado || sinIntentos
 
-  useEffect(() => {
-    if (!ganado && !perdido) return
-    const t = setTimeout(ganado ? onSuperar : onFallar, 1600)
-    return () => clearTimeout(t)
-  }, [ganado, perdido])
+  useResultado(ganado || perdido, ganado ? onSuperar : onFallar, 1600)
 
   function otraVez() {
     setRonda(r => r + 1)
