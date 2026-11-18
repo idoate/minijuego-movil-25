@@ -48,7 +48,10 @@ export default function Maleta({ config, onSuperar }) {
         else j.vidas--
         return false
       }
-      return o.y < ALTO_CAMPO + 30
+      if (o.y < ALTO_CAMPO + 30) return true
+      // Si se le escapa uno bueno, también pierde una vida.
+      if (o.bueno) j.vidas--
+      return false
     })
 
     if (j.puntos >= meta) setFase('ganado')
@@ -72,7 +75,7 @@ export default function Maleta({ config, onSuperar }) {
     <div className="arcade">
       <h2>Haz la maleta</h2>
       <p className="instrucciones">
-        Atrapa {buenos.join(' ')} y esquiva {malos.join(' ')}
+        Atrapa {buenos.join(' ')} sin dejar caer ninguno, y esquiva {malos.join(' ')}
       </p>
       <div className="marcador">
         <span>🧳 {j.puntos} / {meta}</span>
@@ -89,7 +92,7 @@ export default function Maleta({ config, onSuperar }) {
         <span className="maleta" style={{ left: `${j.maleta * 100}%` }}>🧳</span>
 
         {fase === 'inicio' && <Aviso texto="Mueve la maleta con el dedo" boton="¡Empezar!" onClick={empezar} />}
-        {fase === 'perdido' && <Aviso texto="¡Uy! Se te ha colado demasiado" boton="¡Otra vez!" onClick={empezar} />}
+        {fase === 'perdido' && <Aviso texto="¡Uy! Esa maleta no está lista" boton="¡Otra vez!" onClick={empezar} />}
         {fase === 'ganado' && <Aviso texto="¡Maleta lista!" />}
       </div>
     </div>

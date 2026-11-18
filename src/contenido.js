@@ -49,9 +49,9 @@ export const DIAS = [
     config: { buenos: ['🥾', '🧥', '🧣', '🧤'], malos: ['👠', '👙', '🕶️'], meta: 10, vidas: 3 },
     pista: {
       titulo: 'Botas',
-      texto: 'Mete botas de suela gorda y pantalón largo. Te harán falta.',
+      texto: 'Mete botas de monte y pantalón largo: te harán falta. Aunque no te preocupes, a priori no veremos nieve.',
       foto: 'media/pista-27.jpg',
-      nota: 'Ya puedes ir sacando las botas del armario. Los tacones, que se queden en casa.',
+      nota: 'El bikini... ya descubrirás el último día si hace falta llevarlo. Y los tacones no van a ser tu calzado más usado.',
     },
   },
   {
