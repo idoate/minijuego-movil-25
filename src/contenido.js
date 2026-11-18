@@ -136,9 +136,6 @@ export const FINAL = {
   ],
   fotos: [
     { src: 'media/final-pareja.jpg', alt: 'Nosotros' },
-    { src: 'media/final-1.jpg', alt: 'Por fuera' },
-    { src: 'media/final-2.jpg', alt: 'Vistas' },
-    { src: 'media/final-3.jpg', alt: 'La habitación' },
   ],
   // Vídeo del hotel en YouTube; solo se carga al abrir el final.
   video: { id: '_VaW7reGnu0', inicio: 206 },
