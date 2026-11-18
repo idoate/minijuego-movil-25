@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Camino from './Camino.jsx'
-import { CONTRASENA, DIAS, FINAL, INICIO, MENSAJE_INICIAL } from './contenido.js'
+import { CONTRASENA, DIAS, FINAL, INICIO, MALETA, MENSAJE_INICIAL } from './contenido.js'
 import { estadoEtapa, fechaLarga, fechaSimulada, guardarProgreso, hoy, leerProgreso, normalizar } from './logica.js'
 import Ahorcado from './juegos/Ahorcado.jsx'
 import Brujula from './juegos/Brujula.jsx'
@@ -61,6 +61,17 @@ export default function App() {
             onSuperar={() => actualizar(p => ({ superados: [...p.superados, dia.fecha] }))}
             onFallar={() => actualizar(p => ({ fallados: [...p.fallados, dia.fecha] }))}
           />
+        </Tarjeta>
+      )}
+
+      {tarjeta === 'maleta' && (
+        <Tarjeta onCerrar={() => setTarjeta(null)}>
+          {fecha >= MALETA.fecha ? (
+            <article className="pista">
+              <h2>{MALETA.titulo}</h2>
+              {MALETA.texto.map((p, i) => <p key={i}>{p}</p>)}
+            </article>
+          ) : <Espera texto={`Aún no. Este cartel se abre el ${fechaLarga(MALETA.fecha)}.`} />}
         </Tarjeta>
       )}
 

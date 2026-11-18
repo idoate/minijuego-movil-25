@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import Fondo from './Fondo.jsx'
-import { DIAS, FINAL } from './contenido.js'
+import { DIAS, FINAL, MALETA } from './contenido.js'
 import { estadoEtapa, fechaCorta, paradaActual } from './logica.js'
 
 // Salida, 7 paradas y meta, en zigzag de arriba abajo (viewBox 360×1000).
@@ -70,6 +70,7 @@ export default function Camino({ hoy, progreso, onAbrir }) {
         />
       ))}
 
+      <Cartel x={280} y={833} abierto={hoy >= MALETA.fecha} onAbrir={() => onAbrir('maleta')} />
       <Meta punto={PUNTOS[8]} abierta={hoy >= FINAL.fecha} onAbrir={() => onAbrir('final')} />
       <El x={PUNTOS[8].x + 50} y={PUNTOS[8].y + 22} />
       <Leyre ref={leyreRef} x={punto.x + lado} y={punto.y + (actual === -1 ? 26 : 25)} />
@@ -109,6 +110,18 @@ function Meta({ punto, abierta, onAbrir }) {
       <Corazon x={0} y={-6} tam={4.2} />
       {!abierta && <text y="6" className="icono">⏳</text>}
       <text y="44" className="rotulo fecha">{fechaCorta(FINAL.fecha)}</text>
+    </g>
+  )
+}
+
+// Cartel de madera con los consejos para la maleta.
+function Cartel({ x, y, abierto, onAbrir }) {
+  return (
+    <g className={`cartel ${abierto ? 'abierto' : ''}`} transform={`translate(${x},${y})`}
+      onClick={onAbrir} role="button" aria-label="Para la maleta">
+      <rect x="-2.5" y="-4" width="5" height="34" rx="1.5" fill="#8a6a48" />
+      <rect x="-24" y="-26" width="48" height="26" rx="5" fill="#d9a86a" stroke="#9b7a4c" strokeWidth="2" />
+      <text y="-6" className="icono">{abierto ? '🧳' : '⏳'}</text>
     </g>
   )
 }

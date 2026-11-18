@@ -105,6 +105,18 @@ export const DIAS = [
   },
 ]
 
+// Consejos para hacer la maleta: un cartel en el mapa entre la última parada y la meta, que se abre el 1-dic.
+export const MALETA = {
+  fecha: '2026-12-01',
+  titulo: 'Para la maleta',
+  texto: [
+    'Mañana salimos de viaje, así que toca hacer la maleta.',
+    'El sitio ya lo conoces: está escondido en los juegos. Las actividades también las sabes: tendremos algo de turismo, alguna que otra actividad rural, un poco de deporte… y algún rato para ponernos un poco elegantes.',
+    'No te asustes, que no habrá que hacer nada extremo, pero sí nos hace falta un poco de todo.',
+    'Y si dudas con algo, pregúntame: estoy autorizado a responderte sí o no a cualquier cosa que quieras meter en la maleta.',
+  ],
+}
+
 export const FINAL = {
   fecha: '2026-12-02',
   nombre: 'La Montaña Mágica',

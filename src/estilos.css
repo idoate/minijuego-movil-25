@@ -90,6 +90,10 @@ h3 { font-size: 1.7rem; color: var(--verde); margin-top: 1.2em; }
 .parada.cerrada .icono { opacity: .6; }
 
 .meta { cursor: pointer; }
+.cartel { cursor: pointer; }
+.cartel .icono { font-size: 18px; }
+.cartel:not(.abierto) .icono { opacity: .6; }
+.cartel.abierto { animation: latido 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
 .meta.brilla .corazon { animation: latido 1.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; filter: drop-shadow(0 0 6px var(--rosa)); }
 
 .personaje { transition: transform 1.6s ease-in-out; }
