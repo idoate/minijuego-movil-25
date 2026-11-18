@@ -4,19 +4,23 @@ const CLAVE = 'nuestro-camino'
 const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto',
   'septiembre', 'octubre', 'noviembre', 'diciembre']
 
-// 'AAAA-MM-DD' en la hora local del móvil. En desarrollo se puede simular con ?fecha=AAAA-MM-DD.
+// La fecha de ?fecha=AAAA-MM-DD, para probar cualquier día (también en la web publicada), o null.
+export function fechaSimulada() {
+  const simulada = new URLSearchParams(location.search).get('fecha')
+  return /^\d{4}-\d{2}-\d{2}$/.test(simulada ?? '') ? simulada : null
+}
+
+// 'AAAA-MM-DD' en la hora local del móvil, salvo que se simule otra.
 export function hoy() {
-  if (import.meta.env.DEV) {
-    const simulada = new URLSearchParams(location.search).get('fecha')
-    if (/^\d{4}-\d{2}-\d{2}$/.test(simulada ?? '')) return simulada
-  }
+  const simulada = fechaSimulada()
+  if (simulada) return simulada
   const d = new Date()
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
 // Minúsculas, sin acentos ni espacios.
 export function normalizar(texto) {
-  return texto.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, '').toLowerCase()
+  return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').toLowerCase()
 }
 
 const VACIO = { entrada: false, cartaLeida: false, superados: [], fallados: [] }

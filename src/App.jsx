@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Camino from './Camino.jsx'
 import { CONTRASENA, DIAS, FINAL, INICIO, MENSAJE_INICIAL } from './contenido.js'
-import { estadoEtapa, fechaLarga, guardarProgreso, hoy, leerProgreso, normalizar } from './logica.js'
+import { estadoEtapa, fechaLarga, fechaSimulada, guardarProgreso, hoy, leerProgreso, normalizar } from './logica.js'
 import Ahorcado from './juegos/Ahorcado.jsx'
 import Brujula from './juegos/Brujula.jsx'
 import Maleta from './juegos/Maleta.jsx'
@@ -34,6 +34,7 @@ export default function App() {
 
   return (
     <main className="pagina">
+      {fechaSimulada() && <p className="simulada">🧪 Probando el {fechaLarga(fecha)}</p>}
       <header className="cabecera">
         <h1>Nuestro camino</h1>
         {fecha < INICIO && <p>Tu viaje empieza el 25 de noviembre</p>}
