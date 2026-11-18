@@ -99,27 +99,33 @@ export default function Fondo() {
   )
 }
 
-// «Bienvenida a las pasarelas de Alquézar Leyre», con Alquézar tachado. La raya se mide sobre el texto
-// (y otra vez cuando cargan las fuentes) porque el tachado de CSS no se ve igual en todos los móviles.
+// «Bienvenida a las pasarelas de Alquézar Leyre», con Alquézar tachado. Cada trozo es un <text> aparte
+// y se mide con getComputedTextLength (otra vez cuando cargan las fuentes): Safari mide mal los <tspan>
+// y el tachado de CSS no se ve igual en todos los móviles.
+const X_FIRMA = 18, Y_FIRMA = 22, HUECO = 4
+
 function Firma() {
-  const tachado = useRef(null)
-  const [raya, setRaya] = useState(null)
+  const inicio = useRef(null)
+  const lugar = useRef(null)
+  const [medidas, setMedidas] = useState({ inicio: 150, lugar: 42 })
 
   useLayoutEffect(() => {
     const medir = () => {
-      const b = tachado.current?.getBBox()
-      if (b) setRaya({ x1: b.x + 0.5, x2: b.x + b.width + 0.5, y: b.y + b.height * 0.55 })
+      if (!inicio.current || !lugar.current) return
+      setMedidas({ inicio: inicio.current.getComputedTextLength(), lugar: lugar.current.getComputedTextLength() })
     }
     medir()
     document.fonts?.ready.then(medir)
   }, [])
 
+  const xLugar = X_FIRMA + medidas.inicio + HUECO
+  const xNombre = xLugar + medidas.lugar + HUECO
   return (
     <g className="firma">
-      <text x="18" y="22">
-        Bienvenida a las pasarelas de <tspan ref={tachado}>Alquézar</tspan> <tspan className="firma-nombre">Leyre</tspan>
-      </text>
-      {raya && <line x1={raya.x1} x2={raya.x2} y1={raya.y} y2={raya.y} className="firma-raya" />}
+      <text ref={inicio} x={X_FIRMA} y={Y_FIRMA}>Bienvenida a las pasarelas de</text>
+      <text ref={lugar} x={xLugar} y={Y_FIRMA}>Alquézar</text>
+      <line x1={xLugar - 1} x2={xLugar + medidas.lugar + 1} y1={Y_FIRMA - 4} y2={Y_FIRMA - 4} className="firma-raya" />
+      <text x={xNombre} y={Y_FIRMA} className="firma-nombre">Leyre</text>
     </g>
   )
 }

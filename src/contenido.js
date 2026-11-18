@@ -122,7 +122,7 @@ export const MALETA = {
 export const SUMMER = {
   premios: ['kong', 'pata'], // lamer Philadelphia del Kong y patas de gallina
   prohibidos: ['🍫', '🍇', '🧅'],
-  meta: 8,
+  meta: 10,
   segundos: 20,
 }
 

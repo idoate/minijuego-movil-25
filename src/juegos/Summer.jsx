@@ -75,7 +75,7 @@ export default function Summer({ config, enSalida, onSuperar, onFallar }) {
     j.reloj += dt
     if (j.reloj >= 0.55 && j.objetos.length < 4) {
       j.reloj = 0
-      const bueno = Math.random() < 0.65
+      const bueno = Math.random() < 0.58
       const lista = bueno ? premios : prohibidos
       // Lejos del centro, donde está Summer.
       let x, y
@@ -83,7 +83,7 @@ export default function Summer({ config, enSalida, onSuperar, onFallar }) {
         x = 0.1 + Math.random() * 0.8
         y = 0.1 + Math.random() * 0.8
       } while (Math.hypot(x - 0.5, (y - 0.5) * 1.2) < 0.3)
-      j.objetos.push({ id: j.id++, bueno, cual: lista[Math.floor(Math.random() * lista.length)], x, y, vida: 1.4 })
+      j.objetos.push({ id: j.id++, bueno, cual: lista[Math.floor(Math.random() * lista.length)], x, y, vida: 1.1 })
     }
     j.objetos = j.objetos.filter(o => (o.vida -= dt) > 0)
     if (j.aviso && (j.aviso.vida -= dt) <= 0) j.aviso = null
