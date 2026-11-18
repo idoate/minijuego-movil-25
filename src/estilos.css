@@ -130,6 +130,7 @@ img[hidden] { display: none !important; }
 .nota { font-family: var(--titulo); font-size: 1.5rem; color: var(--rosa-oscuro); line-height: 1.2; }
 .final p { text-align: left; }
 .galeria img { margin: 8px 0; }
+.video { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: 14px; margin: 8px 0 12px; background: #000; }
 .collage { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .collage img { margin: 0; aspect-ratio: 1; object-fit: cover; }
 .collage img:first-child { grid-column: span 2; aspect-ratio: 16 / 10; }

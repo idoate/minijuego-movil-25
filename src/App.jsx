@@ -167,6 +167,15 @@ function Final() {
     <article className="pista final">
       <h2>{FINAL.nombre}</h2>
       {FINAL.texto.map((p, i) => <p key={i}>{p}</p>)}
+      {FINAL.video && (
+        <iframe
+          className="video"
+          src={`https://www.youtube-nocookie.com/embed/${FINAL.video.id}?start=${FINAL.video.inicio}&rel=0`}
+          title="Vídeo del sitio"
+          allow="encrypted-media; picture-in-picture; fullscreen"
+          allowFullScreen
+        />
+      )}
       <div className="galeria">
         {FINAL.fotos.map(f => <Foto key={f.src} src={f.src} alt={f.alt} />)}
       </div>

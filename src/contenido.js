@@ -131,5 +131,7 @@ export const FINAL = {
     { src: 'media/final-2.jpg', alt: 'Vistas' },
     { src: 'media/final-3.jpg', alt: 'La habitación' },
   ],
+  // Vídeo del hotel en YouTube; solo se carga al abrir el final.
+  video: { id: '_VaW7reGnu0', inicio: 206 },
   andado: ['media/andado-1.jpg', 'media/andado-2.jpg', 'media/andado-3.jpg', 'media/andado-4.jpg', 'media/andado-5.jpg'],
 }
