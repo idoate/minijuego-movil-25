@@ -1,6 +1,8 @@
 // Fondo del mapa (viewBox 360×1000): un desfiladero con paredes de roca naranja, un río turquesa
 // y mucho verde, inspirado en la foto de Leyre en las pasarelas.
 
+import { useLayoutEffect, useRef, useState } from 'react'
+
 // Aleatorio con semilla: el fondo sale igual en cada visita.
 function aleatorio(semilla) {
   return () => {
@@ -91,6 +93,33 @@ export default function Fondo() {
           <circle key={y} cx={i % 2 ? 314 : 322} cy={y} r={i % 3 ? 9 : 12} fill={VERDES[(i + 2) % 4]} />
         ))}
       </g>
+
+      <Firma />
+    </g>
+  )
+}
+
+// «Bienvenida a las pasarelas de Alquézar Leyre», con Alquézar tachado. La raya se mide sobre el texto
+// (y otra vez cuando cargan las fuentes) porque el tachado de CSS no se ve igual en todos los móviles.
+function Firma() {
+  const tachado = useRef(null)
+  const [raya, setRaya] = useState(null)
+
+  useLayoutEffect(() => {
+    const medir = () => {
+      const b = tachado.current?.getBBox()
+      if (b) setRaya({ x1: b.x + 0.5, x2: b.x + b.width + 0.5, y: b.y + b.height * 0.55 })
+    }
+    medir()
+    document.fonts?.ready.then(medir)
+  }, [])
+
+  return (
+    <g className="firma">
+      <text x="18" y="22">
+        Bienvenida a las pasarelas de <tspan ref={tachado}>Alquézar</tspan> <tspan className="firma-nombre">Leyre</tspan>
+      </text>
+      {raya && <line x1={raya.x1} x2={raya.x2} y1={raya.y} y2={raya.y} className="firma-raya" />}
     </g>
   )
 }

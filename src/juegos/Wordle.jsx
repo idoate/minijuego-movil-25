@@ -24,17 +24,27 @@ function colorear(intento, palabra) {
 export default function Wordle({ config, onSuperar, onFallar }) {
   const palabra = config.palabra.toUpperCase()
   const largo = palabra.length
+  const oportunidades = config.oportunidades ?? 1
+  const [ronda, setRonda] = useState(1)
   const [intentos, setIntentos] = useState([])
   const [actual, setActual] = useState('')
   const ganado = intentos.includes(palabra)
-  const perdido = !ganado && intentos.length >= INTENTOS
-  const terminado = ganado || perdido
+  const sinIntentos = !ganado && intentos.length >= INTENTOS
+  const otraOportunidad = sinIntentos && ronda < oportunidades
+  const perdido = sinIntentos && !otraOportunidad
+  const terminado = ganado || sinIntentos
 
   useEffect(() => {
-    if (!terminado) return
+    if (!ganado && !perdido) return
     const t = setTimeout(ganado ? onSuperar : onFallar, 1600)
     return () => clearTimeout(t)
-  }, [terminado])
+  }, [ganado, perdido])
+
+  function otraVez() {
+    setRonda(r => r + 1)
+    setIntentos([])
+    setActual('')
+  }
 
   function pulsar(tecla) {
     if (terminado) return
@@ -71,7 +81,10 @@ export default function Wordle({ config, onSuperar, onFallar }) {
   return (
     <div className="wordle">
       <h2>Adivina la palabra</h2>
-      <p className="instrucciones">{largo} letras, {INTENTOS} intentos</p>
+      <p className="instrucciones">
+        {largo} letras, {INTENTOS} intentos
+        {oportunidades > 1 && ` · oportunidad ${ronda} de ${oportunidades}`}
+      </p>
       <div className="rejilla">
         {filas.map((fila, f) => {
           const colores = f < intentos.length ? colorear(fila, palabra) : []
@@ -85,6 +98,12 @@ export default function Wordle({ config, onSuperar, onFallar }) {
         })}
       </div>
       {ganado && <p className="aviso bien">¡Bien hecho!</p>}
+      {otraOportunidad && (
+        <>
+          <p className="aviso">Se acabaron los intentos... ¡pero te queda otra oportunidad!</p>
+          <button className="boton" onClick={otraVez}>¡Otra vez!</button>
+        </>
+      )}
       {perdido && <p className="aviso">Se acabaron los intentos</p>}
       <div className="teclado-wordle">
         {FILAS_TECLADO.map(fila => (

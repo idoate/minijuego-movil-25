@@ -57,7 +57,7 @@ export const DIAS = [
   {
     fecha: '2026-11-28',
     juego: 'wordle',
-    config: { palabra: 'RELAX' },
+    config: { palabra: 'RELAX', oportunidades: 2 },
     pista: {
       titulo: 'Burbujas',
       texto: 'Tus contracturas tienen los días contados, y al final del día te esperan agua caliente y burbujas.',
