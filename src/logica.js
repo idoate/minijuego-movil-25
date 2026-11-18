@@ -4,8 +4,10 @@ const CLAVE = 'nuestro-camino'
 const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto',
   'septiembre', 'octubre', 'noviembre', 'diciembre']
 
-// La fecha de ?fecha=AAAA-MM-DD, para probar cualquier día (también en la web publicada), o null.
+// La fecha de ?fecha=AAAA-MM-DD, para probar cualquier día, o null. Solo en desarrollo (npm run dev):
+// en la web publicada este código desaparece.
 export function fechaSimulada() {
+  if (!import.meta.env.DEV) return null
   const simulada = new URLSearchParams(location.search).get('fecha')
   return /^\d{4}-\d{2}-\d{2}$/.test(simulada ?? '') ? simulada : null
 }
